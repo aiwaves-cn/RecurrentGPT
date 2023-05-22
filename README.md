@@ -29,9 +29,13 @@ type: science fiction               #(str) the type of novel you would like to w
 max_tokens: None                    #(int) the max length of your output tokens (Default is 'None' which indicates no explict limit of generation length).
 ```
 
-Then run
+Then after specify your `OPENAI_API_KEY` in the `recurrent.sh` file, you can run
 ```
 sh recurrent.sh
+```
+NOTE: If your local internet is not allowed to access OpenAI's API, you might need to first export your HTTP proxy in the `recurrent.sh` file as well.
+```
+export http_proxy='your_proxy'
 ```
 
 ## Showcases

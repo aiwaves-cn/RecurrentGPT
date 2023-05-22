@@ -4,7 +4,7 @@ iteration=10
 outfile=response.txt
 init_prompt=init_prompt.json
 topic=Aliens
-type="science fiction"
+type="science-fiction"
 max_tokens=4096
 
 options="\

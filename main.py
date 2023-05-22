@@ -18,11 +18,11 @@ if __name__ == '__main__':
     parser.add_argument('--max-tokens', type=int, default=None,
                         help='maximum number of tokens produced in the output')
     args = parser.parse_args()
-    prompts = json.load(open(args.prompts_file,'r'))
+    prompts = json.load(open(args.init_prompt,'r'))
     init_prompt = prompts['init_prompt'].format(type=args.type,topic=args.topic)
 
-    # prepare first init
-    init_paragraphs = get_init(init_prompt,args.r_file)
+    # prepare first init(if there is no paragraph written)
+    init_paragraphs = get_init(init_text=None, text=init_prompt, response_file=args.r_file)
     # print(init_paragraphs)
     start_input_to__human = {
         'output_paragraph': init_paragraphs['Paragraph 3'],
