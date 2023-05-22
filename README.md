@@ -25,8 +25,8 @@ iteration: 10                       #(int) the number of iterations you would li
 outfile: response.txt               #(str) the output file path.
 init_prompt: init_prompt.json       #(str) the path to the prompt used for initialization.
 topic: Aliens                       #(str) the topic that you wish your novel is about.
-type: science fiction               #(str) the type of novel you would like to write.
-max_tokens: None                    #(int) the max length of your output tokens (Default is 'None' which indicates no explict limit of generation length).
+type: science-fiction               #(str) the type of novel you would like to write.
+
 ```
 
 Then after specify your `OPENAI_API_KEY` in the `recurrent.sh` file, you can run

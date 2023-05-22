@@ -5,7 +5,7 @@ outfile=response.txt
 init_prompt=init_prompt.json
 topic=Aliens
 type="science-fiction"
-max_tokens=4096
+
 
 options="\
         --iter $iteration\
@@ -13,6 +13,5 @@ options="\
         --init_prompt $init_prompt \
         --topic $topic \
         --type $type \
-        --max-tokens $max_tokens \
         "
 python main.py $options

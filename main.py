@@ -15,8 +15,6 @@ if __name__ == '__main__':
     parser.add_argument('--init_prompt', type=str, default='init_prompt.json')
     parser.add_argument('--type', type=str, default='science fiction')
     parser.add_argument('--topic', type=str, default='')
-    parser.add_argument('--max-tokens', type=int, default=None,
-                        help='maximum number of tokens produced in the output')
     args = parser.parse_args()
     prompts = json.load(open(args.init_prompt,'r'))
     init_prompt = prompts['init_prompt'].format(type=args.type,topic=args.topic)
