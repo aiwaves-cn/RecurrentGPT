@@ -21,7 +21,7 @@
 ## Deployment
 You can change the configurations given in the `recurrent.sh` script
 ```yaml
-iteration: 10                       #(int) the number of iterations you would like it to roll.
+iteration: 10                       #(int) the number of rounds you would like it to roll.
 outfile: response.txt               #(str) the output file path.
 init_prompt: init_prompt.json       #(str) the path to the prompt used for initialization.
 topic: Aliens                       #(str) the topic that you wish your novel is about.
@@ -54,6 +54,7 @@ export http_proxy='your_proxy'
 > Human writer starts by choosing the topic he/she wants to write and writes a short paragraph describing the background and the outline of the book. Then RECURRENTGPT automatically generates the first paragraphs and provides a few possible options for the writer to continue the story. The writer may select one from them and edit it if needed. He or she can also write a short plan for the next few paragraphs by him/herself if generated plans are all inappropriate, which makes human-AI co-writing process more flexible
 
 ## web demo
+You can directly use our online demo at 
 ![web-demo](resources/web_demo.png)
 
-
+## Citation
