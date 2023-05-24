@@ -2,6 +2,7 @@
 
 <p align="center"><a href="https://arxiv.org/pdf/2305.13304.pdf">[📄 Paper]</a> | <a href="https://www.aiwaves.org/recurrentgpt">[🤗 Demo - Writing Assistant]</a> | <a href="https://www.aiwaves.org/interactivefiction">[🤗 Demo - Interactive Fiction]</a> </p>
 <hr>
+
 ## Framework Illustration
 <div align=center>
 <img src="resources/recurGPT-structure.png" width = "640" alt="struct" align=center />
