@@ -54,7 +54,19 @@ export http_proxy='your_proxy'
 > Human writer starts by choosing the topic he/she wants to write and writes a short paragraph describing the background and the outline of the book. Then RECURRENTGPT automatically generates the first paragraphs and provides a few possible options for the writer to continue the story. The writer may select one from them and edit it if needed. He or she can also write a short plan for the next few paragraphs by him/herself if generated plans are all inappropriate, which makes human-AI co-writing process more flexible
 
 ## web demo
-You can directly use our online demo at 
+You can directly use our online demo at:
+https://www.aiwaves.org/recurrentgpt  and https://www.aiwaves.org/interactivefiction
+
 ![web-demo](resources/web_demo.png)
 
 ## Citation
+```angular2
+@misc{zhou2023recurrentgpt,
+      title={RecurrentGPT: Interactive Generation of (Arbitrarily) Long Text}, 
+      author={Wangchunshu Zhou and Yuchen Eleanor Jiang and Peng Cui and Tiannan Wang and Zhenxin Xiao and Yifan Hou and Ryan Cotterell and Mrinmaya Sachan},
+      year={2023},
+      eprint={2305.13304},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
