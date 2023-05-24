@@ -22,7 +22,7 @@ def get_content_between_a_b(a,b,text):
     return re.search(f"{a}(.*?)\n{b}", text, re.DOTALL).group(1).strip()
 
 
-def get_init(init_text,text,response_file=None):
+def get_init(init_text=None,text=None,response_file=None):
     """
     init_text: if the title, outline, and the first 3 paragraphs are given in a .txt file, directly read
     text: if no .txt file is given, use init prompt to generate
