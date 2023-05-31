@@ -74,7 +74,7 @@ class RecurrentGPT:
     Instruction 3: <content for instruction 3>, around 5 sentences
 
     Very important!! The updated memory should only store key information. The updated memory should never contain over 500 words!
-    Finally, remember that you are writing a novel. Write like a novelist and do not move too fast when writing the output instructions for the next paragraph. Remember that the chapter will contain over 10 paragraphs and the novel will contain over 100 chapters. And this is just the begining. Just write some interesting staffs that will happen next. Also, think about what plot can be attractive for common readers when writing output instructions. 
+    Finally, remember that you are writing a novel. Write like a novelist and do not move too fast when writing the output instructions for the next paragraph. Remember that the chapter will contain over 10 paragraphs and the novel will contain over 100 chapters. And this is just the beginning. Just write some interesting staffs that will happen next. Also, think about what plot can be attractive for common readers when writing output instructions. 
 
     Very Important: 
     You should first explain which sentences in the input memory are no longer necessary and why, and then explain what needs to be added into the memory and why. After that, you start rewrite the input memory to get the updated memory. 
