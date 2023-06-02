@@ -1,5 +1,5 @@
 import gradio as gr
-
+import random
 from recurrentgpt import RecurrentGPT
 from human_simulator import Human
 from sentence_transformers import SentenceTransformer
@@ -110,8 +110,9 @@ def step(short_memory, long_memory, instruction1, instruction2, instruction3, cu
         writer = cache["writer"]
         output = writer.output
         output['output_memory'] = short_memory
-        output['output_instruction'] = [
-            instruction1, instruction2, instruction3]
+        #randomly select one instruction out of three
+        instruction_index = random.randint(0,2)
+        output['output_instruction'] = [instruction1, instruction2, instruction3][instruction_index]
         human.input = output
         human.step()
         writer.input = human.output
@@ -137,7 +138,7 @@ def controled_step(short_memory, long_memory, selected_instruction, current_para
         init_paragraphs = cache["init_paragraphs"]
         human = Human(input=start_input_to_human,
                       memory=None, embedder=embedder)
-        human.step_with_edit()
+        human.step()
         start_short_memory = init_paragraphs['Summary']
         writer_start_input = human.output
 
@@ -154,7 +155,7 @@ def controled_step(short_memory, long_memory, selected_instruction, current_para
         output['output_memory'] = short_memory
         output['output_instruction'] = selected_instruction
         human.input = output
-        human.step_with_edit()
+        human.step()
         writer.input = human.output
         writer.step()
 
