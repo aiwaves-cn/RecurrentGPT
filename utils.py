@@ -24,7 +24,7 @@ def get_api_response(content: str, max_tokens=None):
     )
     response = None
     messages = [
-        SystemMessage(content="""      """),
+        SystemMessage(content="You are a helpful and creative assistant for writing novel."),
         HumanMessage(content=content)
     ]
     try:
