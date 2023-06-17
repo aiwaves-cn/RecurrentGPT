@@ -8,7 +8,6 @@ from langchain.schema import (
 )
 
 def get_api_response(content: str, max_tokens=None):
-    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
     chat = ChatOpenAI(
         openai_api_key=OPENAI_API_KEY,
         #model='gpt-3',
