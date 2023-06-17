@@ -1,22 +1,41 @@
 import re
 import openai
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage
+)
 
 def get_api_response(content: str, max_tokens=None):
-
-    response = openai.ChatCompletion.create(
-        model='gpt-3.5-turbo',
-        messages=[{
-            'role': 'system',
-            'content': 'You are a helpful and creative assistant for writing novel.'
-        }, {
-            'role': 'user',
-            'content': content,
-        }],
-        temperature=0.5,  
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+    chat = ChatOpenAI(
+        openai_api_key=OPENAI_API_KEY,
+        #model='gpt-3',
+        #model='gpt-3.5-turbo',
+        #model='gpt-3.5-turbo-0613',
+        #model='gpt-3.5-turbo-16k',
+        model='gpt-3.5-turbo-16k-0613',
+        #model='gpt-4',
+        #model='gpt-4-0613',
+        #model='gpt-4-32k-0613',
+        temperature=0.5,
         max_tokens=max_tokens
     )
-    
-    return response['choices'][0]['message']['content']
+    response = None
+    messages = [
+        SystemMessage(content="""      """),
+        HumanMessage(content=content)
+    ]
+    try:
+        response = chat(messages)
+    except:
+        st.error("OpenAI Error")
+
+    if response is not None:
+        return response.content
+    else:
+        return "Error: response not found"    
 
 def get_content_between_a_b(a,b,text):
     return re.search(f"{a}(.*?)\n{b}", text, re.DOTALL).group(1).strip()
