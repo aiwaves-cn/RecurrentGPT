@@ -4,7 +4,7 @@ import openai
 def get_api_response(content: str, max_tokens=None):
 
     response = openai.ChatCompletion.create(
-        model='gpt-3.5-turbo',
+        model='gpt-3.5-turbo-16k-0613',
         messages=[{
             'role': 'system',
             'content': 'You are a helpful and creative assistant for writing novel.'
