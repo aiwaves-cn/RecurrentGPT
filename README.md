@@ -60,9 +60,8 @@ export http_proxy='your_proxy'
 You can directly use our online demo at:
 https://www.aiwaves.org/recurrentgpt  and https://www.aiwaves.org/interactivefiction
 
-Or you can run it on your local machine by:
+Or you can run it on your local machine by editing the OPENAI_API_KEY and OPENAI_Proxy in utils.py and then run:
 ```
-export OPENAI_API_KEY="your_api_key"
 python gradio_server.py
 ```
 
