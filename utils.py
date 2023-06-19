@@ -22,19 +22,19 @@ def get_api_response(content: str, max_tokens=None):
         temperature=0.5）
 
 
-    response = openai.ChatCompletion.create(
-        model='gpt-3.5-turbo-16k-0613',
-        messages=[{
-            'role': 'system',
-            'content': 'You are a helpful and creative assistant for writing novel.'
-        }, {
-            'role': 'user',
-            'content': content,
-        }],
-        temperature=0.5,  
-        max_tokens=max_tokens
-    )
-    response = None
+    # response = openai.ChatCompletion.create(
+    #     model='gpt-3.5-turbo-16k-0613',
+    #     messages=[{
+    #         'role': 'system',
+    #         'content': 'You are a helpful and creative assistant for writing novel.'
+    #     }, {
+    #         'role': 'user',
+    #         'content': content,
+    #     }],
+    #     temperature=0.5,  
+    #     max_tokens=max_tokens
+    # )
+    # response = None
     messages = [
         SystemMessage(content="You are a helpful and creative assistant for writing novel."),
         HumanMessage(content=content)
