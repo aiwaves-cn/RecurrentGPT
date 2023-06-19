@@ -7,7 +7,7 @@ from langchain.schema import (
 )
 
 def get_api_response(content: str, max_tokens=None):
-
+    
     chat = ChatOpenAI(
         openai_api_key=OPENAI_API_KEY,
         #model='gpt-3',
@@ -15,10 +15,11 @@ def get_api_response(content: str, max_tokens=None):
         #model='gpt-3.5-turbo-0613',
         #model='gpt-3.5-turbo-16k',
         model='gpt-3.5-turbo-16k-0613',
+        openai_proxy=OPENAI_Proxy,
         #model='gpt-4',
         #model='gpt-4-0613',
         #model='gpt-4-32k-0613',
-        temperature=0.5,
+        temperature=0.5）
 
 
     response = openai.ChatCompletion.create(
