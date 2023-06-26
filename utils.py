@@ -19,7 +19,7 @@ def get_api_response(content: str, max_tokens=None):
         #model='gpt-4',
         #model='gpt-4-0613',
         #model='gpt-4-32k-0613',
-        temperature=0.5）
+        temperature=0.5)
 
 
     # response = openai.ChatCompletion.create(
