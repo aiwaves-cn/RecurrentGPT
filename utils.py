@@ -1,4 +1,6 @@
 import re
+import os
+
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
     AIMessage,
@@ -9,13 +11,12 @@ from langchain.schema import (
 def get_api_response(content: str, max_tokens=None):
     
     chat = ChatOpenAI(
-        openai_api_key=OPENAI_API_KEY,
+        openai_api_key=os.getenv('OPENAI_API_KEY'),
         #model='gpt-3',
         #model='gpt-3.5-turbo',
         #model='gpt-3.5-turbo-0613',
         #model='gpt-3.5-turbo-16k',
         model='gpt-3.5-turbo-16k-0613',
-        openai_proxy=OPENAI_Proxy,
         #model='gpt-4',
         #model='gpt-4-0613',
         #model='gpt-4-32k-0613',
