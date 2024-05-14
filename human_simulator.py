@@ -1,9 +1,37 @@
 
 from utils import get_content_between_a_b, parse_instructions,get_api_response
 
+if "openai" == llm_model_opt:
+    from utils.openai_util import get_api_response
+elif "vllm" == llm_model_opt:
+    from utils.vllm_util import get_api_response
+elif "model" == llm_model_opt:
+    from utils.model_util import get_api_response
+else:
+    raise Exception("not supported llm model name: {}".format(llm_model_opt))
 class Human:
+    """
+    A class designed to simulate a human writer collaborating with an AI to write a novel in Chinese. It manages 
+    narrative input, memory, and outputs based on interactive instructions. The class aims to facilitate the writing 
+    process by extending AI-generated text, selecting proposed plans, and revising plans for future paragraphs.
 
-    def __init__(self, input, memory, embedder):
+    Attributes:
+        input (dict): Input data containing paragraphs, instructions, and output configurations.
+        memory (str): Current summary of the main storyline, either provided or derived from input.
+        embedder (object): An embedding model or related functionality used for processing text.
+        output (dict): Container for storing the output paragraph, selected plan, and revised plan.
+
+    Methods:
+        prepare_input: Prepares the input text by combining different components of the narrative context.
+        parse_plan: Extracts a selected plan from the response text.
+        select_plan: Chooses the most suitable plan from a set of proposed plans based on narrative context.
+        parse_output: Parses the extended paragraph and revised plan from the response text.
+        step: Processes one step of the writing interaction by preparing the input, getting the response, and parsing it.
+    """
+
+
+    
+    def __init__(self, input: Dict[str, str], memory: Optional[str], embedder: Any, model_path:Optional[str]):
         self.input = input
         if memory:
             self.memory = memory
@@ -13,7 +41,7 @@ class Human:
         self.output = {}
 
 
-    def prepare_input(self):
+    def prepare_input(self) -> str:
         previous_paragraph = self.input["input_paragraph"]
         writer_new_paragraph = self.input["output_paragraph"]
         memory = self.input["output_memory"]
@@ -55,12 +83,12 @@ class Human:
     """
         return input_text
     
-    def parse_plan(self,response):
+    def parse_plan(self, response: str) -> str:
         plan = get_content_between_a_b('Selected Plan:','Reason',response)
         return plan
 
 
-    def select_plan(self,response_file):
+    def select_plan(self, response_file: Optional[str]) -> str:
         
         previous_paragraph = self.input["input_paragraph"]
         writer_new_paragraph = self.input["output_paragraph"]
@@ -93,11 +121,11 @@ class Human:
     """
         print(prompt+'\n'+'\n')
 
-        response = get_api_response(prompt)
+        response = get_api_response(prompt,model_path)
 
         plan = self.parse_plan(response)
         while plan == None:
-            response = get_api_response(prompt)
+            response = get_api_response(prompt,model_path)
             plan= self.parse_plan(response)
 
         if response_file:
@@ -106,7 +134,7 @@ class Human:
 
         return plan
         
-    def parse_output(self, text):
+    def parse_output(self, text: str) -> Dict[str, str]:
         try:
             if text.splitlines()[0].startswith('Extended Paragraph'):
                 new_paragraph = get_content_between_a_b(
@@ -131,7 +159,7 @@ class Human:
         except:
             return None
 
-    def step(self, response_file=None):
+    def step(self, response_file: Optional[str]) -> None:
 
         prompt = self.prepare_input()
         print(prompt+'\n'+'\n')
