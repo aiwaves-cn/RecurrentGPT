@@ -1,56 +1,31 @@
 import re
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import (
-    AIMessage,
-    HumanMessage,
-    SystemMessage
-)
+from openai import OpenAI
+import os
+api_key = os.getenv("OPENAI_API_KEY")
+api_base = os.getenv("OPENAI_API_BASE")
 
 def get_api_response(content: str, max_tokens=None):
-    
-    chat = ChatOpenAI(
-        openai_api_key=OPENAI_API_KEY,
-        #model='gpt-3',
-        #model='gpt-3.5-turbo',
-        #model='gpt-3.5-turbo-0613',
-        #model='gpt-3.5-turbo-16k',
-        model='gpt-3.5-turbo-16k-0613',
-        openai_proxy=OPENAI_Proxy,
-        #model='gpt-4',
-        #model='gpt-4-0613',
-        #model='gpt-4-32k-0613',
-        temperature=0.5）
+    client = OpenAI(api_key=api_key,base_url=api_base)
+    response = client.chat.completions.create(
+        model='gpt-4o-2024-05-13',
+        messages=[{
+            'role': 'system',
+            'content': 'You are a helpful and creative assistant for writing novel.'
+        }, {
+            'role': 'user',
+            'content': content,
+        }],
+        temperature=0.5,
+        stream=True
+    )
+    final = ''
+    for chunk in response:
+        if chunk.choices:
+            if chunk.choices[0].delta.content is not None:
+                final += chunk.choices[0].delta.content
+                # print(final)
+    return final 
 
-
-    # response = openai.ChatCompletion.create(
-    #     model='gpt-3.5-turbo-16k-0613',
-    #     messages=[{
-    #         'role': 'system',
-    #         'content': 'You are a helpful and creative assistant for writing novel.'
-    #     }, {
-    #         'role': 'user',
-    #         'content': content,
-    #     }],
-    #     temperature=0.5,  
-    #     max_tokens=max_tokens
-    # )
-    # response = None
-    messages = [
-        SystemMessage(content="You are a helpful and creative assistant for writing novel."),
-        HumanMessage(content=content)
-    ]
-    try:
-        response = chat(messages)
-    except:
-        st.error("OpenAI Error")
-
-    if response is not None:
-        return response.content
-    else:
-        return "Error: response not found"    
-
-def get_content_between_a_b(a,b,text):
-    return re.search(f"{a}(.*?)\n{b}", text, re.DOTALL).group(1).strip()
 
 
 def get_init(init_text=None,text=None,response_file=None):
