@@ -6,14 +6,6 @@ from sentence_transformers import SentenceTransformer
 from utils import get_init, parse_instructions
 import re
 
-# from urllib.parse import quote_plus
-# from pymongo import MongoClient
-
-# uri = "mongodb://%s:%s@%s" % (quote_plus("xxx"),
-#                               quote_plus("xxx"), "localhost")
-# client = MongoClient(uri, maxPoolSize=None)
-# db = client.recurrentGPT_db
-# log = db.log
 
 _CACHE = {}
 
@@ -169,114 +161,44 @@ def on_select(instruction1, instruction2, instruction3, evt: gr.SelectData):
     selected_plan = [instruction1, instruction2, instruction3][selected_plan-1]
     return selected_plan
 
-
 with gr.Blocks(title="RecurrentGPT", css="footer {visibility: hidden}", theme="default") as demo:
-    gr.Markdown(
-        """
-    # RecurrentGPT
-    Interactive Generation of (Arbitrarily) Long Texts with Human-in-the-Loop
-    """)
     with gr.Tab("Auto-Generation"):
-        with gr.Row():
-            with gr.Column():
-                with gr.Box():
-                    with gr.Row():
-                        with gr.Column(scale=1, min_width=200):
-                            novel_type = gr.Textbox(
-                                label="Novel Type", placeholder="e.g. science fiction")
-                        with gr.Column(scale=2, min_width=400):
-                            description = gr.Textbox(label="Description")
-                btn_init = gr.Button(
-                    "Init Novel Generation", variant="primary")
-                gr.Examples(["Science Fiction", "Romance", "Mystery", "Fantasy",
-                            "Historical", "Horror", "Thriller", "Western", "Young Adult", ], inputs=[novel_type])
-                written_paras = gr.Textbox(
-                    label="Written Paragraphs (editable)", max_lines=21, lines=21)
-            with gr.Column():
-                with gr.Box():
-                    gr.Markdown("### Memory Module\n")
-                    short_memory = gr.Textbox(
-                        label="Short-Term Memory (editable)", max_lines=3, lines=3)
-                    long_memory = gr.Textbox(
-                        label="Long-Term Memory (editable)", max_lines=6, lines=6)
-                    # long_memory = gr.Dataframe(
-                    #     # label="Long-Term Memory (editable)",
-                    #     headers=["Long-Term Memory (editable)"],
-                    #     datatype=["str"],
-                    #     row_count=3,
-                    #     max_rows=3,
-                    #     col_count=(1, "fixed"),
-                    #     type="array",
-                    # )
-                with gr.Box():
-                    gr.Markdown("### Instruction Module\n")
-                    with gr.Row():
-                        instruction1 = gr.Textbox(
-                            label="Instruction 1 (editable)", max_lines=4, lines=4)
-                        instruction2 = gr.Textbox(
-                            label="Instruction 2 (editable)", max_lines=4, lines=4)
-                        instruction3 = gr.Textbox(
-                            label="Instruction 3 (editable)", max_lines=4, lines=4)
-                    selected_plan = gr.Textbox(
-                        label="Revised Instruction (from last step)", max_lines=2, lines=2)
+        with gr.Column():
+            with gr.Row():
+                novel_type = gr.Textbox(
+                    label="Novel Type", placeholder="e.g. science fiction")
+                description = gr.Textbox(label="Topic")
+            btn_init = gr.Button(
+                "Init Novel Generation", elem_id="init_button")
+            gr.Examples(["Science Fiction", "Romance", "Mystery", "Fantasy",
+                        "Historical", "Horror", "Thriller", "Western", "Young Adult"],
+                        inputs=[novel_type], elem_id="example_selector")
+            written_paras = gr.Textbox(
+                label="Written Paragraphs (editable)", lines=21)
 
-                btn_step = gr.Button("Next Step", variant="primary")
+        with gr.Column():
+            gr.Markdown("### Memory Module")
+            short_memory = gr.Textbox(
+                label="Short-Term Memory (editable)", lines=3)
+            long_memory = gr.Textbox(
+                label="Long-Term Memory (editable)", lines=6)
+            gr.Markdown("### Instruction Module")
+            instruction1 = gr.Textbox(
+                label="Instruction 1 (editable)", lines=4)
+            instruction2 = gr.Textbox(
+                label="Instruction 2 (editable)", lines=4)
+            instruction3 = gr.Textbox(
+                label="Instruction 3 (editable)", lines=4)
+            selected_plan = gr.Textbox(
+                label="Revised Instruction (from last step)", lines=2)
 
+        btn_step = gr.Button("Next Step", elem_id="step_button")
         btn_init.click(init, inputs=[novel_type, description], outputs=[
             short_memory, long_memory, written_paras, instruction1, instruction2, instruction3])
         btn_step.click(step, inputs=[short_memory, long_memory, instruction1, instruction2, instruction3, written_paras], outputs=[
             short_memory, long_memory, written_paras, selected_plan, instruction1, instruction2, instruction3])
 
-    with gr.Tab("Human-in-the-Loop"):
-        with gr.Row():
-            with gr.Column():
-                with gr.Box():
-                    with gr.Row():
-                        with gr.Column(scale=1, min_width=200):
-                            novel_type = gr.Textbox(
-                                label="Novel Type", placeholder="e.g. science fiction")
-                        with gr.Column(scale=2, min_width=400):
-                            description = gr.Textbox(label="Description")
-                btn_init = gr.Button(
-                    "Init Novel Generation", variant="primary")
-                gr.Examples(["Science Fiction", "Romance", "Mystery", "Fantasy",
-                            "Historical", "Horror", "Thriller", "Western", "Young Adult", ], inputs=[novel_type])
-                written_paras = gr.Textbox(
-                    label="Written Paragraphs (editable)", max_lines=23, lines=23)
-            with gr.Column():
-                with gr.Box():
-                    gr.Markdown("### Memory Module\n")
-                    short_memory = gr.Textbox(
-                        label="Short-Term Memory (editable)", max_lines=3, lines=3)
-                    long_memory = gr.Textbox(
-                        label="Long-Term Memory (editable)", max_lines=6, lines=6)
-                with gr.Box():
-                    gr.Markdown("### Instruction Module\n")
-                    with gr.Row():
-                        instruction1 = gr.Textbox(
-                            label="Instruction 1", max_lines=3, lines=3, interactive=False)
-                        instruction2 = gr.Textbox(
-                            label="Instruction 2", max_lines=3, lines=3, interactive=False)
-                        instruction3 = gr.Textbox(
-                            label="Instruction 3", max_lines=3, lines=3, interactive=False)
-                    with gr.Row():
-                        with gr.Column(scale=1, min_width=100):
-                            selected_plan = gr.Radio(["Instruction 1", "Instruction 2", "Instruction 3"], label="Instruction Selection",)
-                                                    #  info="Select the instruction you want to revise and use for the next step generation.")
-                        with gr.Column(scale=3, min_width=300):
-                            selected_instruction = gr.Textbox(
-                                label="Selected Instruction (editable)", max_lines=5, lines=5)
-
-                btn_step = gr.Button("Next Step", variant="primary")
-
-        btn_init.click(init, inputs=[novel_type, description], outputs=[
-            short_memory, long_memory, written_paras, instruction1, instruction2, instruction3])
-        btn_step.click(controled_step, inputs=[short_memory, long_memory, selected_instruction, written_paras], outputs=[
-            short_memory, long_memory, written_paras, instruction1, instruction2, instruction3])
-        selected_plan.select(on_select, inputs=[
-                             instruction1, instruction2, instruction3], outputs=[selected_instruction])
-
-    demo.queue(concurrency_count=1)
+    demo.launch()
 
 if __name__ == "__main__":
     demo.launch(server_port=8005, share=True,
